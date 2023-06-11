@@ -1,8 +1,8 @@
 """
-Applet: Air Now AQI
+Applet: AirNowAQI
 Summary: Air Now AQI
-Description: TODO
-Author: Michael Coyne
+Description: Displays the current AQI value and level by location using data provided by AirNow.gov.
+Author: mjc-gh
 """
 
 load("cache.star", "cache")
@@ -13,7 +13,6 @@ load("http.star", "http")
 load("humanize.star", "humanize")
 load("render.star", "render")
 load("schema.star", "schema")
-load("time.star", "time")
 
 API_KEY = "EAC9C956-3EDE-4955-A5BE-53492091A0DE"
 ACCURACY = "#.###"
@@ -66,6 +65,8 @@ def get_current_observation(lat, lng):
         if obj["ParameterName"] == "PM2.5":
             return obj
 
+    return None
+
 def render_alert_circle(aqi, alert_colors):
     bg_color, txt_color = alert_colors
 
@@ -111,7 +112,6 @@ def main(config):
     lng = humanize.float(ACCURACY, float(location["lng"]))
 
     observation = get_current_observation(lat, lng)
-    print(observation)
 
     category_num = observation["Category"]["Number"]
     category_name = observation["Category"]["Name"]
