@@ -7,6 +7,7 @@ Author: Michael Coyne
 
 load("cache.star", "cache")
 load("encoding/json.star", "json")
+
 #load("hash.star", "hash")
 load("http.star", "http")
 load("humanize.star", "humanize")
@@ -44,7 +45,9 @@ def get_alert_colors(category_num):
 
 def get_current_observation_url(lat, lng):
     return "https://www.airnowapi.org/aq/forecast/latLong/?format=application/json&latitude={lat}&longitude={lng}&&API_KEY={api_key}".format(
-        lat = lat, lng = lng, api_key = API_KEY
+        lat = lat,
+        lng = lng,
+        api_key = API_KEY,
     )
 
 def get_current_observation(lat, lng):
@@ -75,9 +78,9 @@ def render_alert_circle(aqi, alert_colors):
             diameter = 24,
             child = render.Padding(
                 pad = (0, 2, 0, 0),
-                child = render.Text("%d" % (aqi), font = "10x20", color = txt_color)
-            )
-        )
+                child = render.Text("%d" % (aqi), font = "10x20", color = txt_color),
+            ),
+        ),
     )
 
 def render_category_text(category_name, reporting_area, alert_colors):
@@ -87,18 +90,18 @@ def render_category_text(category_name, reporting_area, alert_colors):
         width = 38,
         height = 32,
         child = render.Column(
-            expanded=True,
-            main_align="space_around",
-            cross_align="center",
+            expanded = True,
+            main_align = "space_around",
+            cross_align = "center",
             children = [
                 render.Text(category_name, color = bg_color, font = "tom-thumb"),
                 render.WrappedText(
                     reporting_area,
                     color = "#DDD",
-                    font = "tom-thumb"
-                )
-            ]
-        )
+                    font = "tom-thumb",
+                ),
+            ],
+        ),
     )
 
 def main(config):
@@ -123,20 +126,20 @@ def main(config):
             expanded = True,
             children = [
                 render_alert_circle(aqi, alert_colors),
-                render_category_text(category_name, reporting_area, alert_colors)
-            ]
-        )
+                render_category_text(category_name, reporting_area, alert_colors),
+            ],
+        ),
     )
 
 def get_schema():
     return schema.Schema(
-            version = "1",
-            fields = [
-                schema.Location(
-                    id = "location",
-                    name = "Location",
-                    desc = "Location for which to display weather radar.",
-                    icon = "locationDot",
-                ),
-            ]
+        version = "1",
+        fields = [
+            schema.Location(
+                id = "location",
+                name = "Location",
+                desc = "Location for which to display weather radar.",
+                icon = "locationDot",
+            ),
+        ],
     )
